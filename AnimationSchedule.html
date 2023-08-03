@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+  <!-- Element-UI -->
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+</head>
+
+<body>
+  <div id="app">
+
+    <el-tabs class="border-card" type="border-card" :value='getDay()'>
+
+      <el-tab-pane v-for="(weekData,index) in this.allData" :name='weekData.weekday.cn' :label="weekData.weekday.cn">
+        <div class="ani_card">
+          <div v-for="(aniData,j) in weekData.items">
+            <div class="ani_img">
+
+              <img v-if='aniData.img != null' :src='aniData.img.common'>
+              <img v-else
+                src="https://img1.baidu.com/it/u=4234325487,282886408&fm=253&fmt=auto&app=138&f=JPEG?w=236&h=238">
+            </div>
+            <div class="ani_info">
+              <p id="title">{{aniData.name}}</p>
+              <hr />
+              <p id="jpName">日文名: {{aniData.name_jp == null?'暂无':aniData.name_jp}}</p>
+              <p id="date">
+                <span class="tag0">播放日期</span> {{aniData.air_date == null?'暂无':aniData.air_date}}
+                <span class="tag1">更新时间</span>{{aniData.time==null?'暂无':aniData.time}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+
+</body>
+<style>
+  .tag0 {
+    background-color: #ff4757;
+    border-radius: 5px;
+    padding: 3px;
+    color: white;
+    margin-right: 5px;
+  }
+
+  .tag1 {
+    background-color: #2ed573;
+    border-radius: 5px;
+    padding: 3px;
+    color: white;
+    margin-right: 5px;
+  }
+
+
+  .border-card {
+    width: 820px;
+    height: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  .ani_img {
+    width: 10%;
+    float: left;
+    height: 120px;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ani_img img {
+    width: 70px;
+    height: 100px;
+    margin-left: 5px;
+
+  }
+
+
+  .ani_info {
+    width: 35%;
+    float: left;
+    height: 100px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f1f2f6;
+  }
+
+  .ani_info #title {
+    margin-top: 0px;
+    font-weight: bold;
+  }
+
+  .ani_info #jpName {
+    color: darkgray;
+  }
+
+  .ani_info #date {
+    padding-top: 20px;
+  }
+
+  .ani_info p {
+    margin-top: 0px;
+    font-size: 5px;
+  }
+</style>
+<script>
+  new Vue({
+    el: '#app',
+    data: function () {
+      return {
+        visible: false,
+        weekDayZH: null,
+        allData: []
+      }
+    },
+    methods: {
+      getDay: function () {
+        // 获取今天星期几
+        const days = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+        const today = new Date();
+        const weekday = today.getDay();
+        return days[weekday];
+      }
+    },
+    mounted() {
+
+      // 获取数据
+      axios({
+        method: "get",
+        url: "https://raw.githubusercontent.com/AzumWatson/anime-data/main/data.json"
+      }).then((result) => {
+        this.allData = result.data;
+
+      });
+    }
+  })
+</script>
+
+</html>
