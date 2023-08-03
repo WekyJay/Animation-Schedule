@@ -1,5 +1,7 @@
 # Animation-Schedule
-简单的Vue.js + Element-UI页面获取每周新番
+>简单的Vue.js + Element-UI页面获取每周新番
+>
+>自动获取数据、自动展示当前星期的内容。
 
 数据来源：https://raw.githubusercontent.com/AzumWatson/anime-data/main/data.json
 
